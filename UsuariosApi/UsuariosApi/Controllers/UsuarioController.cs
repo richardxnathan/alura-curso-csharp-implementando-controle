@@ -1,17 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using UsuariosApi.Data.Dtos;
+using UsuariosApi.Services;
 
-namespace UsuariosApi.Controllers;
-
-[ApiController]
-[Route("[Controller]")]
-public class UsuarioController : ControllerBase
+namespace UsuariosApi.Controllers
 {
-
-    [HttpPost]
-    public IActionResult CadastraUsuario(CreateUsuarioDto dto)
+    [ApiController]
+    [Route("[Controller]")]
+    public class UsuarioController : ControllerBase
     {
-        throw new NotImplementedException();
-    }
 
+        private CadastroService _cadastroService;
+
+        public UsuarioController(CadastroService cadastroService)
+        {
+            _cadastroService = cadastroService;
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CadastraUsuario(CreateUsuarioDto dto)
+        {
+            await _cadastroService.Cadastra(dto);
+            return Ok("Usuário cadastrado!");
+
+        }
+    }
 }
